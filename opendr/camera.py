@@ -99,7 +99,7 @@ class ProjectPoints(Ch):
         elif wrt is self.v:
             rot = cv2.Rodrigues(self.rt.r)[0]
             data = np.asarray(j[:, 3:6].dot(rot), order='C').ravel()
-            IS = np.repeat(np.arange(self.v.r.size*2/3), 3)
+            IS = np.repeat(np.arange(self.v.r.size*2//3), 3)
             JS = np.asarray(np.repeat(np.arange(self.v.r.size).reshape((-1,3)), 2, axis=0), order='C').ravel()
             result = sp.csc_matrix((data, (IS, JS)))
             return result

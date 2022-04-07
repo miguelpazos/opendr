@@ -302,9 +302,9 @@ class ColoredRenderer(BaseRenderer):
 
         if wrt is self.camera:
             if self.overdraw:
-                return common.dImage_wrt_2dVerts_bnd(color, visible, visibility, barycentric, self.frustum['width'], self.frustum['height'], self.v.r.size/3, self.f, self.boundaryid_image != 4294967295)
+                return common.dImage_wrt_2dVerts_bnd(color, visible, visibility, barycentric, self.frustum['width'], self.frustum['height'], self.v.r.size//3, self.f, self.boundaryid_image != 4294967295)
             else:
-                return common.dImage_wrt_2dVerts(color, visible, visibility, barycentric, self.frustum['width'], self.frustum['height'], self.v.r.size/3, self.f)
+                return common.dImage_wrt_2dVerts(color, visible, visibility, barycentric, self.frustum['width'], self.frustum['height'], self.v.r.size//3, self.f)
 
         elif wrt is self.vc:
             return common.dr_wrt_vc(visible, visibility, self.f, barycentric, self.frustum, self.vc.size, num_channels=self.num_channels)
@@ -817,7 +817,7 @@ def _setup_camera(gl, cx, cy, fx, fy, w, h, near, far, view_matrix, k):
             program = gl.CreateProgram()
 
             vs = gl.CreateShader(GL_VERTEX_SHADER)
-            gl.ShaderSource(vs, 1, vs_source, len(vs_source))
+            gl.ShaderSource(vs, 1, bytes(vs_source, 'latin-1'), len(vs_source))
             gl.AttachShader(program, vs)
 
             # fs = gl.CreateShader(GL_FRAGMENT_SHADER)
@@ -835,7 +835,7 @@ def _setup_camera(gl, cx, cy, fx, fy, w, h, near, far, view_matrix, k):
             k[:len(tmp)] = tmp
 
         for idx, vname in enumerate(['k1', 'k2', 'p1', 'p2', 'k3', 'k4', 'k5', 'k6']):
-            loc = gl.GetUniformLocation(gl.distortion_shader, vname)
+            loc = gl.GetUniformLocation(gl.distortion_shader, bytes(vname, 'latin-1'))
             gl.Uniform1f(loc, k[idx])
     else:
         gl.UseProgram(0)
